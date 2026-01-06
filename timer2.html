@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Timer</title>
+  <style>
+    body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      color: #007bff;
+    }
+
+    .timer {
+      text-align: center;
+    }
+
+    .valor {
+      font-size: 64px;
+      font-weight: bold;
+    }
+
+    .label {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .linha {
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="timer">
+  <div class="linha">
+    <div class="valor" id="dias">0</div>
+    <div class="label">DIAS</div>
+  </div>
+
+  <div class="linha">
+    <div class="valor" id="horas">00</div>
+    <div class="label">HORAS</div>
+  </div>
+
+  <div class="linha">
+    <div class="valor" id="minutos">00</div>
+    <div class="label">MINUTOS</div>
+  </div>
+
+  <div class="linha">
+    <div class="valor" id="segundos">00</div>
+    <div class="label">SEGUNDOS</div>
+  </div>
+</div>
+
+<script>
+  // 📌 Data final em HORÁRIO DE BRASÍLIA (UTC-3)
+  // 10 de janeiro de 2026, 16:30 (Brasília)
+  const dataFinalUTC = Date.UTC(2026, 0, 10, 19, 30, 0);
+  // ↑ 16:30 BRT = 19:30 UTC
+
+  const diasEl = document.getElementById("dias");
+  const horasEl = document.getElementById("horas");
+  const minutosEl = document.getElementById("minutos");
+  const segundosEl = document.getElementById("segundos");
+
+  function atualizarTimer() {
+    const agoraUTC = Date.now();
+    const tempoRestante = dataFinalUTC - agoraUTC;
+
+    if (tempoRestante <= 0) {
+      diasEl.textContent = "0";
+      horasEl.textContent = "00";
+      minutosEl.textContent = "00";
+      segundosEl.textContent = "00";
+      return;
+    }
+
+    const dias = Math.floor(tempoRestante / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((tempoRestante / (1000 * 60 * 60)) % 24);
+    const minutos = Math.floor((tempoRestante / (1000 * 60)) % 60);
+    const segundos = Math.floor((tempoRestante / 1000) % 60);
+
+    diasEl.textContent = dias;
+    horasEl.textContent = String(horas).padStart(2, "0");
+    minutosEl.textContent = String(minutos).padStart(2, "0");
+    segundosEl.textContent = String(segundos).padStart(2, "0");
+  }
+
+  atualizarTimer();
+  setInterval(atualizarTimer, 1000);
+</script>
+
+</body>
+</html>
+
+
